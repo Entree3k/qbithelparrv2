@@ -1,28 +1,17 @@
-# Base image
-FROM python:3.8-slim-buster
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
 
-# Install required packages
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libffi-dev \
-    libssl-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    libjpeg-dev \
-    zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set the working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the Python script and configuration files
-COPY bot.py config.ini ./
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# Install the required Python packages
-RUN pip install -r requirements.txt
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the required ports
+# Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# Set the entrypoint command
-CMD ["python", "bot.py"]
+# Run bot.py when the container launches
+CMD ["python", "qbithelparr.py"]
