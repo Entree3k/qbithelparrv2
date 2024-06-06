@@ -3,6 +3,8 @@ from discord.ext import commands
 import requests
 import qbittorrentapi
 import configparser
+import telegram
+from telegram import Bot
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -115,6 +117,14 @@ def update_all(category, status="all"):
     discord_list = convert_to_discord(final_list)
     return discord_list
 
+# Initialize Telegram Bot
+telegram_token = config['TELEGRAM']['token']
+telegram_chat_id = config['TELEGRAM']['chat_id']
+telegram_bot = Bot(token=telegram_token)
+
+def send_telegram_message(message):
+    telegram_bot.send_message(chat_id=telegram_chat_id, text=message)
+
 print("------------------------------------------------")
 print("starting Discord...")
 
@@ -157,6 +167,7 @@ async def status(ctx, *args):
         
         for msg in discord_list:
             await ctx.channel.send(msg)
+            send_telegram_message(msg)  # Send the same message to Telegram
 
 botChannel = int(config['DISCORD']['botChannel'])
 tvCategory = config['SONARR']['tvCategory']
