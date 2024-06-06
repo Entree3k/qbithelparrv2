@@ -2,3 +2,4 @@ discord.py==2.0.1
 requests==2.27.1
 qbittorrent-api==2022.10.21
 configparser==5.2.0
+python-telegram-bot==13.7
